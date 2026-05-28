@@ -1,10 +1,18 @@
 import os
+import ssl
 from collections import defaultdict
 from urllib.parse import urlparse
 
 import pg8000.dbapi
 
 _PLAYER_FIELDS = ("name", "min", "pts", "reb", "ast", "stl", "blk", "plus_minus")
+
+
+def _ssl_context():
+    ctx = ssl.create_default_context()
+    ctx.check_hostname = False
+    ctx.verify_mode = ssl.CERT_NONE
+    return ctx
 
 
 def get_conn():
@@ -15,7 +23,7 @@ def get_conn():
         user=p.username,
         password=p.password,
         port=p.port or 5432,
-        ssl_context=True,
+        ssl_context=_ssl_context(),
     )
 
 

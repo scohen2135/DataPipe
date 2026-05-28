@@ -186,6 +186,7 @@ def run(target_date: date = None):
                 log.info(f"  Added: {record['away_team']} {record['away_score']} @ "
                          f"{record['home_team']} {record['home_score']}")
             except Exception:
+                conn.rollback()
                 log.exception(f"  Failed to process game {g['espn_id']} -- skipping.")
 
         if added:

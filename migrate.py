@@ -1,4 +1,9 @@
-"""One-time migration: load existing games.json into the database."""
+"""
+One-time migration: load existing games.json into the database.
+THIS HAS ALREADY BEEN RUN. Do not run again — all records are already
+in Supabase and inserts are idempotent (ON CONFLICT DO NOTHING), but
+re-running will duplicate player rows since players have no unique constraint.
+"""
 import json
 from pathlib import Path
 from dotenv import load_dotenv

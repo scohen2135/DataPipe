@@ -1,3 +1,5 @@
+import os
+
 import pandas as pd
 import streamlit as st
 from dotenv import load_dotenv
@@ -12,6 +14,24 @@ st.set_page_config(
     page_icon="🏀",
     layout="wide"
 )
+
+# ---- Password gate ----
+def check_password():
+    if st.session_state.get("authenticated"):
+        return True
+    st.markdown("## 🏀 NBA Stat Leaders")
+    st.divider()
+    pwd = st.text_input("Password", type="password")
+    if st.button("Login"):
+        if pwd == os.environ.get("APP_PASSWORD", ""):
+            st.session_state.authenticated = True
+            st.rerun()
+        else:
+            st.error("Incorrect password.")
+    return False
+
+if not check_password():
+    st.stop()
 
 TEAM_COLORS = {
     "New York Knicks":         "#003DA5",
